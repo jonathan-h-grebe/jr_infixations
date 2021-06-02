@@ -1,7 +1,7 @@
 import sys, os, math, re, datetime
 import requests.auth
 from enum import Enum
-from apiclient.discovery import build
+#from apiclient.discovery import build
 from youtube_api_wrapper import youtube_api_wrapper
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "jri.settings")
@@ -47,12 +47,44 @@ class MenuOpts(Enum):
 def process_comment(comment, v_id, v_title, ct_id, c_id, c_date):
     res = regex.search(comment)
     if res:
+        print(f'Got infixation: {res[0]}')
         Infixation(infixation=res[0], vid_id=v_id, comment_thread_id=ct_id,\
              comment_id=c_id, vid_title=v_title, \
                  date_added=datetime.datetime(int(c_date[0:4]),\
                                              int(c_date[5:7]),\
                                             int(c_date[8:10])
                                             )).save()
+
+def check_one_comment_thread():
+    pass
+
+def check_replies_to_thread(thread_item):
+    if 'replies' not in thread_item:
+        pass
+    #If all replies included in the current request response
+    elif thread_item['snippet']['totalReplyCount'] == len(thread_item['replies']['comments']):
+        for comment in thread_item['replies']['comments']:
+            write_to_log_and_print(logfile, 'reply comment: ' + comment['snippet']['textOriginal']+'\n')
+            process_comment(comment['snippet']['textOriginal'],\
+                videoId, videoTitle, thread_item['id'],thread_item["snippet"]["topLevelComment"]['id'],\
+                    comment['snippet']['publishedAt'])
+    #If further requests are neccesary to get all the comments.
+    else:
+        write_to_log_and_print(logfile, f'Getting all comments from "comment" resource.\n')
+        res_comments = youtube.do_req(api_type="comments", part="snippet", parentId=thread_item["id"], maxResults=COMMENT_MAX_RESULTS)
+        reply_pages_remaining = True
+        while reply_pages_remaining:
+            for comment in res_comments['items']:
+                write_to_log_and_print(logfile, f'Comment: {comment["snippet"]["textOriginal"]}\n')
+                process_comment(comment['snippet']['textOriginal'],\
+                    videoId, videoTitle, thread_item['id'],thread_item["snippet"]["topLevelComment"]['id'],\
+                        comment['snippet']['publishedAt'])
+  
+            reply_pages_remaining = True if 'nextPageToken' in res_comments else False
+
+            if reply_pages_remaining:
+                res_comments = youtube.do_req(api_type="comments", part="snippet", parentId=thread_item["id"], maxResults=COMMENT_MAX_RESULTS, pageToken=res_comments['nextPageToken'])
+
 
 def show_menu_options():
     print('Choose one of...')
@@ -85,10 +117,8 @@ if __name__ == "__main__":
             inp = input('enter search string/ or 0 to go back: ')
 
             with open('get.log', 'a+', encoding='UTF-8') as logfile:
-                #youtube = build('youtube', 'v3', developerKey=API_KEY)
 
                 youtube = youtube_api_wrapper()
-
 
                 logfile.write(f'STARTING AT {timezone.now()}\n')
                 write_to_log_and_print(logfile, f'Searching for: {inp}\n')
@@ -117,13 +147,13 @@ if __name__ == "__main__":
                                 res_vid = youtube.do_req(api_type="videos", part="statistics,snippet", id=videoId)
                                 commentCnt = res_vid["items"][0]["statistics"]["commentCount"]
                                 write_to_log_and_print(logfile, f'Comment count for {videoId} is: {commentCnt}\n')
-                                
+
                                 res_thread = youtube.do_req(api_type="commentThreads", part="snippet,replies,id", maxResults=COMMENT_THREAD_MAX_RESULTS, videoId=videoId)
 
                                 has_more_top_comments = True
 
                                 while has_more_top_comments:
-                                    
+
                                     for thread in res_thread['items']:
                                         try:
                                             write_to_log_and_print(logfile, f'Top level comment: {thread["snippet"]["topLevelComment"]["snippet"]["textOriginal"]}\n')
@@ -134,7 +164,7 @@ if __name__ == "__main__":
                                         process_comment(thread["snippet"]["topLevelComment"]["snippet"]["textOriginal"],\
                                             videoId, videoTitle, thread['id'],thread["snippet"]["topLevelComment"]['id'],\
                                                 thread["snippet"]["topLevelComment"]['snippet']['publishedAt'])
-                                        #HERE
+
                                         write_to_log_and_print(logfile, f'Has {thread["snippet"]["totalReplyCount"]} reply(ies)\n')
 
                                         if 'replies' not in thread:
