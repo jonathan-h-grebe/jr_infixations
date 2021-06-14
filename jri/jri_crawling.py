@@ -144,6 +144,11 @@ def show_menu_options():
 
 
 def make_initial_ct_req(videoId, youtube):
+    #Make first request for comment threads for given video.
+
+    #If this video was partially checked previously, but checking was aborted
+    #due to some exception and the last pagen token was saved, start looking
+    #from that page token.
     if vid_partially_checked(videoId):
         next_page_token = Part_Checked_Vids.objects.get(vid_id=videoId).next_page_token
         return youtube.do_req(api_type="commentThreads", part="snippet,replies,id",
@@ -262,7 +267,8 @@ def search_for_new_infixations():
                     res_search = youtube.do_req(api_type="search", part="snippet", q=inp, type="video",
                                                 maxResults=SEARCH_MAX_RESULTS, pageToken=res_search['nextPageToken'])
 
-        logfile.write(f'ENDING - used a total of {api_req_cnt} api requests\n\n')
+        logfile.write(f'Finished going through videos based on search string.\nMade a total of {youtube.req_cnt} reqs to Google API.\n\n')
+        print(f'Finished going through videos based on search string.\nMade a total of {youtube.req_cnt} reqs to Google API.')
         logfile.close()
 
 
