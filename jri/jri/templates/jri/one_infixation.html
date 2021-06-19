@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Infixation</title>
+    <link rel="stylesheet" href="{% static 'pure-2.0.6/build/pure-min.css' %}">
+    <link rel="icon"href="{% static 'favicon.ico' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin:auto; text-align: center;">
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a href="/jri" class="pure-menu-link">Infixations</a>
+            </li>
+            <li class="pure-menu-item">
+                <a href="#" class="pure-menu-link">About</a>
+            </li>
+            <li class="pure-menu-item">
+                <a href="/jri/list_source_vids" class="pure-menu-link">Source Videos</a>
+            </li>
+        </ul>
+    </div>
+
+    <h1>INFIXATION DETAIL</h1>
+
+    <table class="pure-table-bordered pure-table" style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td style="background-color:  #fcf75e; font-weight: 200;">Joe Rogan Type</td>
+            <td>{{object.only_text_field}}</td>
+        </tr>
+        <tr>
+            <td style="background-color:  #fcf75e; font-weight: 200;">Video</td>
+            <td>{{inf_vid_obj.vid_title}}</td>
+        </tr>
+        <tr>
+            <td style="background-color:  #fcf75e; font-weight: 200;">Youtube Like Count</td>
+            <td>{{object.likes}}</td>
+        </tr>
+        <tr>
+            <td style="background-color:  #fcf75e; font-weight: 200;">Date Registered</td>
+            <td>{{object.date_added}}</td>
+        </tr>
+    </table>
+
+</body>

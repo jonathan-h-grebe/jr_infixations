@@ -20,6 +20,10 @@ class Infixation(models.Model):
 
     def __str__(self):
         return self.infixation
+    
+    def only_infixation(self):
+        self.new_field = self.infixation[len('Joe "'): len(self.infixation) - len('" Rogan')]
+        return self.infixation[len('Joe "'): len(self.infixation) - len('" Rogan')]
 
 
 class Checked_Vids(models.Model):
