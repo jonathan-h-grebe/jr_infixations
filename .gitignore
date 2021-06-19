@@ -7,4 +7,6 @@
 **/settings.py
 **/jono_settings.py
 *.log
-*.cpython-37.pyc
+*.cpython-37*
+jri/eliminator.py
+tango_site/
