@@ -1,1 +1,1 @@
-web: gunicorn jri.wsgi
+web: gunicorn jri.jri.wsgi
