@@ -10,3 +10,4 @@
 *.cpython-37*
 jri/eliminator.py
 tango_site/
+env/
