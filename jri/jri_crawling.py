@@ -4,7 +4,6 @@ from enum import Enum
 from youtube_api_wrapper import youtube_api_wrapper
 from my_errors import ErrorCheckingThreadReplies, ErrorGettingNextCommentThreads
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "jri.settings")
 import django
 django.setup()
 from db_builder.models import Infixation, Checked_Vids, Part_Checked_Vids
