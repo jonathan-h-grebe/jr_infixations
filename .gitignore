@@ -4,7 +4,6 @@
 .venv/
 **/__pycache/
 **/node_modules/
-**/settings.py
 **/jono_settings.py
 *.log
 *.cpython-37*
