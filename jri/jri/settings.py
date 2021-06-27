@@ -20,7 +20,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 ' sleepy-ridge-39968.herokuapp.com/'
+                 'sleepy-ridge-39968.herokuapp.com'
                  ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
