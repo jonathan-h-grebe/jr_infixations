@@ -1,50 +1,32 @@
-<!DOCTYPE html>
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>Checked Vids</title>
-    <link rel="stylesheet" href="{% static 'pure-2.0.6/build/pure-min.css' %}">
-    <link rel="icon"href="{% static 'favicon.ico' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+{% extends "jri/list_base.html" %}
 
-<body>
-    <body style="margin:auto; text-align: center;">
-        <div class="pure-menu pure-menu-horizontal">
-            <ul class="pure-menu-list">
-                <li class="pure-menu-item">
-                    <a href="/jri" class="pure-menu-link">Infixations</a>
-                </li>
-                <li class="pure-menu-item">
-                    <a href="#" class="pure-menu-link">About</a>
-                </li>
-                <li class="pure-menu-item">
-                    <a href="/jri/list_source_vids" class="pure-menu-link">Source Videos</a>
-                </li>
-            </ul>
-        </div>
-    <h1>Checked Videos</h1>
+{% block metaTitle %} CHECKED VIDEO {% endblock %}
+
+{% block mainTitle %} Checked Videos {% endblock %}
+
+{% block mainContent %}
 
     {% if object_list %}
-    <table class="pure-table-bordered pure-table pure-table-striped" 
-           style="margin-left: auto; margin-right: auto;">
-        <thead style="background-color:  #fcf75e;">
+        <table class="pure-table-bordered pure-table pure-table-striped" 
+                style="margin-left: auto; margin-right: auto;">
+            <thead style="background-color:  #fcf75e;">
+                <tr>
+                    <th>Video Name</th>
+                    <th>Infixations Found</th>
+                    <th>Date Checked</th>
+                </tr>
+            </thead>
+            {% for checked_vid in object_list %}
             <tr>
-                <th>Video Name</th>
-                <th>Infixations Found</th>
-                <th>Date Checked</th>
+                <td><a href="https://www.youtube.com/watch?v={{checked_vid.vid_id}}">{{checked_vid.vid_title}}</a></td>
+                <td>?</td>
+                <td>{{checked_vid.checked_date}}</td>
             </tr>
-        </thead>
-        {% for checked_vid in object_list %}
-        <tr>
-            <td><a href="https://www.youtube.com/watch?v={{checked_vid.vid_id}}">{{checked_vid.vid_title}}</a></td>
-            <td>?</td>
-            <td>{{checked_vid.checked_date}}</td>
-        </tr>
 
-        {% endfor %}
-    </table>
+            {% endfor %}
+        </table>
     {% endif %}
+
     <div class="pagination" style="margin-top: 30px;">
         <span class="step-links">
             {% if page_obj.has_previous %}
@@ -63,4 +45,4 @@
         </span>
     </div>
 
-</body>
+{% endblock %}

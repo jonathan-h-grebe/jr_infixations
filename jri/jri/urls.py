@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('jri/', views.jriListView.as_view()),
     path('jri/list_source_vids', views.checkedVideosListView.as_view()),
-    path('jri/infixation/<int:pk>', views.singleInfixation.as_view())
+    path('jri/infixation/<int:pk>', views.singleInfixation.as_view()),
+    path('jri/base', views.baseView.as_view()),
+    path('jri/ko', views.koView.as_view()),
 ]

@@ -9,6 +9,7 @@ def add_field_to_inf(infixation):
     infixation.only_text_field = infixation.only_infixation()
     return infixation
 
+
 class jriListView(generic.ListView):
     model = Infixation
     paginate_by = PAGINATE_NUMBER
@@ -23,6 +24,14 @@ class checkedVideosListView(generic.ListView):
     model = Checked_Vids
     paginate_by = PAGINATE_NUMBER
     template_name = 'jri/all_checked_vids.html'
+
+class baseView(generic.ListView):
+    model = Checked_Vids
+    template_name = 'jri/mybase.html'
+
+class koView(generic.ListView):
+    model = Checked_Vids
+    template_name = 'jri/my_ko.html'
 
 class singleInfixation(generic.DetailView):
     model = Infixation

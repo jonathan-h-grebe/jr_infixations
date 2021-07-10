@@ -1,43 +1,22 @@
-<!DOCTYPE html>
-<head>
-    {% load static %}
-    <meta charset="utf-8">
-    <title>Its Joe Rogan Infixations</title>
-    <link rel="stylesheet" href="{% static 'pure-2.0.6/build/pure-min.css' %}">
-    <link rel="icon"href="{% static 'favicon.ico' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body style="margin:auto; text-align: center;">
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <a href="/jri" class="pure-menu-link">Infixations</a>
-            </li>
-            <li class="pure-menu-item">
-                <a href="#" class="pure-menu-link">About</a>
-            </li>
-            <li class="pure-menu-item">
-                <a href="/jri/list_source_vids" class="pure-menu-link">Source Videos</a>
-            </li>
-        </ul>
-    </div>
 
-    <div class="splash pure-u">
-        <h1 class="splash-head">JOE ROGAN INFIXATION DATABASE</h1>
-    </div>
+{% extends "jri/list_base.html" %}
 
-    <table class="pure-table-bordered pure-table pure-table-striped" 
-           style="margin-left: auto; margin-right: auto;">
-        <thead style="text-align: center; background-color:  #fcf75e;">
-            <tr>
-                <th>Infixation</th>
-                <th>Youtube Likes</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-    {% if object_list %}
+{% block metaTitle %}All JRIs{% endblock %}
+
+{% block mainTitle %}JOE ROGAN INFIXATION DATABASE{% endblock %}
+
+{% block mainContent %}
+<table class="pure-table-bordered pure-table pure-table-striped" 
+        style="margin-left: auto; margin-right: auto;">
+    <thead style="text-align: center; background-color:  #fcf75e;">
+        <tr>
+            <th>Infixation</th>
+            <th>Youtube Likes</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+{% if object_list %}
     <tbody>
-
         {% for i in object_list %}
         <tr class="pure-table">
             <td>Joe "<span style="font-weight: bold;">{{i.only_text_field}}</span>" Rogan</td>
@@ -46,24 +25,23 @@
         </tr>
         {% endfor %}
     </tbody>
-    {% endif %}
-    </table>
+{% endif %}
+</table>
 
-    <div class="pagination" style="margin-top: 30px;">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">◀</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">▶</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-</body>
+<span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">◀</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">▶</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</span>
+
+{% endblock %}        
